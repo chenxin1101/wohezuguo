@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <script src="https://cdn.bootcss.com/jquery/1.10.2/jquery.min.js"></script>
+    <title></title>
+    <style type="text/css">
+        html,
+        body {
+            height: 100%;
+        }
+
+        body,
+        ul,
+        li,
+        a,
+        p,
+        div {
+            padding: 0px;
+            margin: 0px;
+        }
+
+        #wrap {
+            overflow: hidden;
+            width: 100%;
+        }
+
+        #main {
+            top: 0;
+            position: relative;
+        }
+
+        .page {
+            width: 100%;
+            margin: 0;
+
+        }
+
+        #pageUl {
+            position: fixed;
+            right: 10px;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="wrap">
+        <div id="main">
+            <ul id="pageUl" type="circle">
+                <li id="pageUlLi1" class="pageUlLi" style="color: white;">&nbsp;</li>
+                <li id="pageUlLi2" class="pageUlLi">&nbsp;</li>
+                <li id="pageUlLi3" class="pageUlLi">&nbsp;</li>
+                <li id="pageUlLi4" class="pageUlLi">&nbsp;</li>
+                <li id="pageUlLi6" class="pageUlLi">&nbsp;</li>
+                <li id="pageUlLi7" class="pageUlLi">&nbsp;</li>
+            </ul>
+            <div style="background-color: red" id="page1" class="page">
+                <img src="我.jpg" height="600px" width="800px"/>
+            </div>
+            <div style="background-color: orange" id="page2" class="page">
+                <img src="和.jpg" height="600px" width="800px"/>
+            </div>
+            <div style="background-color: yellow" id="page3" class="page">
+                <img src="祖.jpg" height="600px" width="800px"/>
+            </div>
+            <div style="background-color: green" id="page4" class="page">
+                <img src="国.jpg" height="600px" width="800px"/>
+            </div>
+            <div style="background-color: lightgreen" id="page5" class="page">
+                <img src="共.jpg" height="600px" width="800px"/>
+            </div>
+            <div style="background-color: blue" id="page6" class="page">
+                <img src="奋.jpg" height="600px" width="800px"/>
+            </div>
+            <div style="background-color: purple" id="page7" class="page">
+                <img src="进.jpg" height="600px" width="800px"/>
+            </div>
+        </div>
+    </div>
+</body>
+<embed src="我和我的祖国.mp3" hidden="true" autostart="true" loop="true" type="audio/mpeg" />
+<script type="text/javascript">
+    window.onload = resizeImages;
+    window.onresize = resizeImages;
+
+    function resizeImages() {
+        $(function (e) {
+            var screenWeight = document.documentElement.clientWidth;
+            var screenHeight = document.documentElement.clientHeight;
+            $("[name=pageImg]").css("width", screenWeight).css("height", screenHeight);
+            $("#pageUl").css("bottom", screenHeight >> 1);
+        });
+    }
+
+    var index = 1;
+    var curIndex = 1;
+    var wrap = document.getElementById("wrap");
+    var main = document.getElementById("main");
+    var hei = document.body.clientHeight;
+    wrap.style.height = hei + "px";
+    var obj = document.getElementsByTagName("div");
+    for (var i = 0; i < obj.length; i++) {
+        if (obj[i].className == 'page') {
+            obj[i].style.height = hei + "px";
+        }
+    }
+    var pageNum = document.querySelectorAll(".page").length;
+    var startTime = 0,
+        endTime = 0,
+        now = 0;   
+    if ((navigator.userAgent.toLowerCase().indexOf("firefox") != -1)) {
+        document.addEventListener("DOMMouseScroll", scrollFun, false);
+    } else if (document.addEventListener) {
+        document.addEventListener("mousewheel", scrollFun, false);
+    } else if (document.attachEvent) {
+        document.attachEvent("onmousewheel", scrollFun);
+    } else {
+        document.onmousewheel = scrollFun;
+    }
+
+    function scrollFun(event) {
+        startTime = new Date().getTime();
+        var delta = event.detail || (-event.wheelDelta);
+        if ((endTime - startTime) < -1000) {
+            if (delta > 0 && parseInt(main.offsetTop) > -(hei * (pageNum - 1))) {
+                index++;
+                toPage(index);
+            }
+            if (delta < 0 && parseInt(main.offsetTop) < 0) {
+                index--;
+                toPage(index);
+            }
+            endTime = new Date().getTime();
+        } else {
+            event.preventDefault();
+        }
+    }
+
+    function toPage(index) {
+        if(index!=curIndex){
+            var delta=index - curIndex;
+            now = now - delta * hei;        
+            $("#main").animate({
+                top: (now + 'px')
+            }, 1000);
+            curIndex = index;
+            $(".pageUlLi").css("color", "black");
+            $("#pageUlLi" + index).css("color", "red");
+        }
+    }
+
+    document.getElementById("pageUlLi1").onmouseover = function () {
+        toPage(1);
+    }
+    document.getElementById("pageUlLi2").onmouseover = function () {
+        toPage(2);
+    }
+    document.getElementById("pageUlLi3").onmouseover = function () {
+        toPage(3);
+    }
+    document.getElementById("pageUlLi4").onmouseover = function () {
+        toPage(4);
+    }
+    document.getElementById("pageUlLi5").onmouseover = function () {
+        toPage(5);
+    }
+    document.getElementById("pageUlLi6").onmouseover = function () {
+        toPage(6);
+    }
+    document.getElementById("pageUlLi7").onmouseover = function () {
+        toPage(7);
+    }
+</script>
+
+</html>
